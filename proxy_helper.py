@@ -133,9 +133,7 @@ def generate_singbox_config(vless_config: dict) -> dict:
             }
         }
     
-    # 打印outbound配置用于调试
-    import json
-    logger.info(f"Outbound配置: {json.dumps(outbound, indent=2)}")
+    # 配置已生成（不打印敏感信息）
     
     # 完整配置
     singbox_config = {
@@ -176,10 +174,7 @@ def start_singbox(config: dict) -> subprocess.Popen:
     with open(config_path, "w") as f:
         json.dump(config, f, indent=2)
     
-    logger.info(f"sing-box配置已写入: {config_path}")
-    
-    # 打印配置内容用于调试
-    logger.info(f"配置内容:\n{json.dumps(config, indent=2)}")
+    logger.info("sing-box配置已生成")
     
     # 启动sing-box
     process = subprocess.Popen(
@@ -255,8 +250,7 @@ def setup_proxy():
         logger.error("❌ VLESS配置解析失败")
         return None
     
-    logger.info(f"服务器: {config['server']}:{config.get('port', 443)}")
-    logger.info(f"安全类型: {config.get('security', 'none')}")
+    logger.info("VLESS配置解析成功")
     
     # 生成sing-box配置
     singbox_config = generate_singbox_config(config)
