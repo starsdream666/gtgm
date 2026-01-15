@@ -47,14 +47,12 @@ jobs:
         env:
           REGISTER_COUNT: ${{ github.event.inputs.count || '1' }}
           CONCURRENT: ${{ github.event.inputs.concurrent || '1' }}
-        run: |
-          cd gtgm
-          python register.py
+        run: python register.py
       
       - name: 保存日志
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: registration-log-${{ github.run_number }}
-          path: gtgm/*.log
+          path: "*.log"
           retention-days: 7
