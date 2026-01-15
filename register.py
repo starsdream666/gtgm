@@ -52,7 +52,8 @@ class CredentialData:
     
     def to_dict(self) -> dict:
         """导出为同步格式"""
-        expires_at = (datetime.now() + timedelta(hours=12)).strftime("%Y-%m-%d %H:%M:%S")
+        # GitHub Actions运行在UTC时区，转换为北京时间(+8)后再加12小时有效期
+        expires_at = (datetime.now() + timedelta(hours=20)).strftime("%Y-%m-%d %H:%M:%S")
         return {
             "id": self.email,
             "csesidx": self.csesidx,
