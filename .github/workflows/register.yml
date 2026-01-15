@@ -14,8 +14,8 @@ on:
         default: '1'
         type: string
   schedule:
-    # 每天UTC 00:00 运行 (北京时间 08:00)
-    - cron: '0 0 * * *'
+    # 每6小时运行一次 (UTC 00:00, 06:00, 12:00, 18:00)
+    - cron: '0 */6 * * *'
 
 env:
   WORKER_DOMAIN: ${{ secrets.WORKER_DOMAIN }}
@@ -56,7 +56,8 @@ jobs:
       
       - name: 运行注册机
         env:
-          REGISTER_COUNT: ${{ github.event.inputs.count || '1' }}
+          # 手动触发使用输入值，定时触发默认注册2个账号
+          REGISTER_COUNT: ${{ github.event.inputs.count || '2' }}
           CONCURRENT: ${{ github.event.inputs.concurrent || '1' }}
         run: python register.py
       
