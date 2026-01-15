@@ -141,14 +141,14 @@ MIT License
 
 ### 注册机逻辑
 - GitHub: [xLmiler/test_band](https://github.com/xLmiler/test_band)
-- Linux.do: [相关讨论帖](https://linux.do/t/topic/1234455)
+- Linux.do: [相关讨论帖](https://linux.do/t/topic/1234455?u=starsdream)
 
 ### API 反代
-- Linux.do: [2API 反代教程](https://linux.do/t/topic/1225645)
+- Linux.do: [2API 反代教程](https://linux.do/t/topic/1225645?u=starsdream)
 
 ### Hugging Face 镜像
-- Linux.do: [HF 镜像部署](https://linux.do/t/topic/1226413)
+- Linux.do: [HF 镜像部署](https://linux.do/t/topic/1226413?u=starsdream)
 
 ### 域名邮箱搭建
-- Linux.do: [域名邮箱教程](https://linux.do/t/topic/316819)
+- Linux.do: [域名邮箱教程](https://linux.do/t/topic/316819?u=starsdream)
 - 官方文档: [Temp Mail Docs](https://temp-mail-docs.awsl.uk)
