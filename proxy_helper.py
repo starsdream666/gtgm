@@ -178,6 +178,9 @@ def start_singbox(config: dict) -> subprocess.Popen:
     
     logger.info(f"sing-box配置已写入: {config_path}")
     
+    # 打印配置内容用于调试
+    logger.info(f"配置内容:\n{json.dumps(config, indent=2)}")
+    
     # 启动sing-box
     process = subprocess.Popen(
         ["sing-box", "run", "-c", config_path],
@@ -186,10 +189,43 @@ def start_singbox(config: dict) -> subprocess.Popen:
     )
     
     # 等待启动
-    time.sleep(3)
+    time.sleep(5)  # 增加等待时间
     
     if process.poll() is None:
-        logger.info(f"✅ sing-box已启动 - HTTP代理: 127.0.0.1:{LOCAL_HTTP_PORT}")
+        logger.info(f"✅ sing-box进程已启动 - HTTP代理: 127.0.0.1:{LOCAL_HTTP_PORT}")
+        
+        # 测试代理连接
+        import requests
+        proxy_url = f"http://127.0.0.1:{LOCAL_HTTP_PORT}"
+        try:
+            test_response = requests.get(
+                "https://www.google.com",
+                proxies={'http': proxy_url, 'https': proxy_url},
+                timeout=10
+            )
+            logger.info(f"✅ 代理测试成功: Google返回状态码 {test_response.status_code}")
+        except Exception as e:
+            logger.warning(f"⚠️ 代理测试失败: {e}")
+            # 尝试查看sing-box输出
+            try:
+                import select
+                if process.stderr:
+                    stderr_output = ""
+                    # 非阻塞读取
+                    import os
+                    import fcntl
+                    fd = process.stderr.fileno()
+                    fl = fcntl.fcntl(fd, fcntl.F_GETFL)
+                    fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
+                    try:
+                        stderr_output = process.stderr.read().decode()
+                    except:
+                        pass
+                    if stderr_output:
+                        logger.error(f"sing-box错误输出: {stderr_output[:500]}")
+            except:
+                pass
+        
         return process
     else:
         stderr = process.stderr.read().decode()
