@@ -1,4 +1,4 @@
-# 🚀 Gemini Business 自动注册机
+# 🚀 GeminiForge (原 gtgm)
 
 基于 GitHub Actions 的 Gemini Business 账号自动注册工具，支持 VLESS 代理和定时任务。
 

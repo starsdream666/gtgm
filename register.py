@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Gemini Business 账号注册机 (GitHub Actions版)
+GeminiForge (原 gtgm) - Gemini Business 账号注册机
 专为GitHub Actions无头环境设计，使用Playwright替代DrissionPage
 
 环境变量配置:
