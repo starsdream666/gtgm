@@ -1,0 +1,60 @@
+name: Gemini Business Account Registration
+
+on:
+  workflow_dispatch:
+    inputs:
+      count:
+        description: '注册账号数量'
+        required: true
+        default: '1'
+        type: string
+      concurrent:
+        description: '并发数 (1-5)'
+        required: true
+        default: '1'
+        type: string
+  schedule:
+    # 每天UTC 00:00 运行 (北京时间 08:00)
+    - cron: '0 0 * * *'
+
+env:
+  WORKER_DOMAIN: ${{ secrets.WORKER_DOMAIN }}
+  EMAIL_DOMAIN: ${{ secrets.EMAIL_DOMAIN }}
+  ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+  SYNC_URL: ${{ secrets.SYNC_URL }}
+  SYNC_KEY: ${{ secrets.SYNC_KEY }}
+
+jobs:
+  register:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+      
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: 安装依赖
+        run: |
+          pip install playwright requests
+          playwright install chromium
+          playwright install-deps chromium
+      
+      - name: 运行注册机
+        env:
+          REGISTER_COUNT: ${{ github.event.inputs.count || '1' }}
+          CONCURRENT: ${{ github.event.inputs.concurrent || '1' }}
+        run: |
+          cd gtgm
+          python register.py
+      
+      - name: 保存日志
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: registration-log-${{ github.run_number }}
+          path: gtgm/*.log
+          retention-days: 7
